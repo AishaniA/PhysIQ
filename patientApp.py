@@ -1,12 +1,16 @@
 import pandas as pd
 import streamlit as st
 from openai import OpenAI
+import openai
 from PIL import Image
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-img = Image.open("logo.png")
+#img = Image.open("logo.png")
 st.set_page_config(
     page_title="PhysIQ - At Home AI Diagnosis",
-    page_icon=img,
+    #page_icon=img,
     layout="wide",
 )
 
@@ -78,12 +82,14 @@ if st.button("Diagnose"):
             f"I have the following symptoms: {', '.join(user_symptoms)}. "
             "Based on these, what disease or medical condition might I have? "
             "Please provide a brief and concise diagnosis. Keep the answers very brief and casual as to not scare patients. Provide advice and at-home possible remedies and advise to see doctors as needed."
+            "Please give a severity level based on the diagnosis and recommend how urgent the patient must seek physician help on a scale of 1 to 5, 5 being urgent. "
         )
         
         # Set your OpenAI API key (it is recommended to store this securely in Streamlit secrets)
-        client = OpenAI(
-    api_key= "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"  # This is the default and can be omitted
-)
+#         client = OpenAI(
+#     api_key= os.getenv("OPENAI_API_KEY")
+# )
+        client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
         # Call the GPT‑4 API with the prompt
         chat_completion = client.chat.completions.create(
